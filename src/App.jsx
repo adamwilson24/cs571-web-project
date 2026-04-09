@@ -1,15 +1,20 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import NavigationBar from "./components/NavigationBar";
+import Home from "./pages/Home.jsx";
+import Projects from "./pages/Projects";
 
 function App() {
   return (
-    <div className="container mt-5">
-      <h1>Hello World</h1>
-      <p>This app is working.</p>
-    </div>
+    <Router basename="/cs571-web-project">
+      <NavigationBar />
+
+      <div className="container mt-4">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/projects" element={<Projects />} />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 
