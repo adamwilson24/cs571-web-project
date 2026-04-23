@@ -1,51 +1,208 @@
+import { useEffect, useRef, useState } from "react";
 import { Container, Row, Col, Card } from "react-bootstrap";
 
-function Skills() {
+function SkillCard({ skill, index }) {
+  const ref = useRef(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) setVisible(true); },
+      { threshold: 0.2 }
+    );
+    if (ref.current) observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <Container className="mt-5 text-center">
-      {/* Section Title */}
-      <h2 className="mb-5 fw-bold">What I Do</h2>
+    <Col md={4} ref={ref} style={{
+      opacity: visible ? 1 : 0,
+      transform: visible ? "translateY(0)" : "translateY(40px)",
+      transition: `opacity 0.6s ease ${index * 0.15}s, transform 0.6s ease ${index * 0.15}s`,
+    }}>
+      <Card className="h-100 border-0 rounded-4 skills-card">
+        <Card.Body className="p-4">
+          <div style={{ fontSize: "2.5rem", marginBottom: "1rem" }}>{skill.icon}</div>
+          <h4 style={{ color: "#fff", fontWeight: 700 }}>{skill.title}</h4>
+          <p style={{ color: "rgba(255,255,255,0.6)", marginTop: "0.75rem" }}>{skill.text}</p>
+        </Card.Body>
+      </Card>
+    </Col>
+  );
+}
 
-      <Row className="g-4">
-        
-        {/* Development */}
-        <Col md={4}>
-          <Card className="h-100 shadow border-0 rounded-4">
-            <Card.Body>
-              <h4>💻 Development</h4>
-              <p className="mt-3">
-                Building full-stack applications using React, ASP.NET, and modern JavaScript tools.
-              </p>
-            </Card.Body>
-          </Card>
-        </Col>
 
-        {/* Design */}
-        <Col md={4}>
-          <Card className="h-100 shadow border-0 rounded-4">
-            <Card.Body>
-              <h4>🎨 Design</h4>
-              <p className="mt-3">
-                Creating clean, user-friendly interfaces with a focus on UI/UX and visual design.
-              </p>
-            </Card.Body>
-          </Card>
-        </Col>
+function TimelineItem({ item, index }) {
+  const ref = useRef(null);
+  const [visible, setVisible] = useState(false);
 
-        {/* Projects */}
-        <Col md={4}>
-          <Card className="h-100 shadow border-0 rounded-4">
-            <Card.Body>
-              <h4>🚀 Projects</h4>
-              <p className="mt-3">
-                Developing real-world projects that solve problems and showcase technical skills.
-              </p>
-            </Card.Body>
-          </Card>
-        </Col>
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) setVisible(true); },
+      { threshold: 0.3 }
+    );
+    if (ref.current) observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, []);
 
-      </Row>
-    </Container>
+  return (
+    <div
+      ref={ref}
+      style={{
+        display: "flex",
+        gap: "1.5rem",
+        alignItems: "flex-start",
+        marginBottom: "2.5rem",
+        opacity: visible ? 1 : 0,
+        transform: visible ? "translateX(0)" : "translateX(-30px)",
+        transition: `opacity 0.6s ease ${index * 0.15}s, transform 0.6s ease ${index * 0.15}s`,
+      }}
+    >
+      {/* Dot + line column */}
+      <div style={{ display: "flex", flexDirection: "column", alignItems: "center", minWidth: "20px" }}>
+        <div style={{
+          width: "14px",
+          height: "14px",
+          borderRadius: "50%",
+          background: "linear-gradient(135deg, #7c3aed, #ec4899)",
+          boxShadow: visible ? "0 0 12px rgba(168,85,247,0.8), 0 0 24px rgba(168,85,247,0.4)" : "none",
+          transition: `box-shadow 0.6s ease ${index * 0.15 + 0.3}s`,
+          flexShrink: 0,
+          marginTop: "4px",
+        }} />
+        <div style={{
+          width: "2px",
+          flex: 1,
+          minHeight: "60px",
+          background: "linear-gradient(to bottom, rgba(124,58,237,0.5), rgba(124,58,237,0.05))",
+          marginTop: "6px",
+        }} />
+      </div>
+
+      {/* Card */}
+      <div style={{
+        flex: 1,
+        background: "#1a1a2e",
+        border: "1px solid rgba(124,58,237,0.2)",
+        borderRadius: "12px",
+        padding: "1.25rem 1.5rem",
+        marginBottom: "0.5rem",
+        transition: "border-color 0.3s ease, box-shadow 0.3s ease",
+      }}
+        onMouseEnter={e => {
+          e.currentTarget.style.borderColor = "rgba(168,85,247,0.5)";
+          e.currentTarget.style.boxShadow = "0 8px 24px rgba(124,58,237,0.15)";
+        }}
+        onMouseLeave={e => {
+          e.currentTarget.style.borderColor = "rgba(124,58,237,0.2)";
+          e.currentTarget.style.boxShadow = "none";
+        }}
+      >
+        <div style={{
+          display: "inline-block",
+          background: "rgba(124,58,237,0.15)",
+          border: "1px solid rgba(124,58,237,0.3)",
+          borderRadius: "6px",
+          padding: "2px 10px",
+          color: "#a855f7",
+          fontWeight: 700,
+          fontSize: "0.8rem",
+          letterSpacing: "1px",
+          marginBottom: "0.6rem",
+        }}>
+          {item.year}
+        </div>
+        <div style={{ color: "#fff", fontWeight: 700, fontSize: "1.05rem", marginBottom: "0.4rem" }}>
+          {item.title}
+        </div>
+        <div style={{ color: "rgba(255,255,255,0.5)", fontSize: "0.9rem", lineHeight: "1.6" }}>
+          {item.desc}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function Skills() {
+  const skills = [
+    {
+      icon: "💻",
+      title: "Development",
+      text: "Building full-stack applications using React, ASP.NET, and modern JavaScript tools.",
+    },
+    {
+      icon: "🎨",
+      title: "Design",
+      text: "Creating clean, user-friendly interfaces with a focus on UI/UX and visual design.",
+    },
+    {
+      icon: "🚀",
+      title: "Projects",
+      text: "Developing real-world projects that solve problems and showcase technical skills.",
+    },
+  ];
+
+  const timeline = [
+    {
+      year: "2023",
+      title: "Started First Internship",
+      desc: "At Kapco Metal Stamping, building internal applications with ASP.NET to enhance warehouse operations.",
+    },
+    {
+      year: "2024",
+      title: "Enrolled at UW-Madison",
+      desc: "Majoring in Information Science, gaining strong technical foundations through coursework and projects.",
+    },
+    {
+      year: "2025",
+      title: "Returned to Internship",
+      desc: "Managing all of the custom applications for Kapco, improving efficiency and reducing errors.",
+    },
+    {
+      year: "2026",
+      title: "Now",
+      desc: "Building polished web apps, deepening UI/UX skills, seeking new opportunities.",
+    },
+  ];
+
+  return (
+    <>
+      {/* What I Do */}
+      <div className="skills-section">
+        <Container>
+          <h2 className="text-center fw-bold mb-2" style={{ color: "#fff" }}>
+            What I Do
+          </h2>
+          <p className="text-center mb-5" style={{ color: "rgba(255,255,255,0.5)" }}>
+            A snapshot of my skills and focus areas
+          </p>
+          <Row className="g-4">
+            <Row className="g-4">
+              {skills.map((skill, i) => (
+                <SkillCard key={i} skill={skill} index={i} />
+              ))}
+            </Row>
+          </Row>
+        </Container>
+      </div>
+
+      {/* My Journey */}
+      <div style={{ background: "#0a0a1a", padding: "80px 0" }}>
+        <Container>
+          <h2 className="text-center fw-bold mb-2" style={{ color: "#fff" }}>
+            My Journey
+          </h2>
+          <p className="text-center mb-5" style={{ color: "rgba(255,255,255,0.5)" }}>
+            How I got here
+          </p>
+          <div style={{ maxWidth: "620px", margin: "0 auto" }}>
+            {timeline.map((item, i) => (
+              <TimelineItem key={i} item={item} index={i} />
+            ))}
+          </div>
+        </Container>
+      </div>
+    </>
   );
 }
 

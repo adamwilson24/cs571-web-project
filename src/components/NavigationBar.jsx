@@ -3,9 +3,9 @@ import { Link } from "react-router-dom";
 
 function NavigationBar() {
   return (
-    <Navbar bg="dark" variant="dark" expand="lg">
+    <Navbar variant="dark" expand="lg" className="navbar">
       <Container>
-        <Navbar.Brand as={Link} to="/">
+        <Navbar.Brand as={Link} to="/" style={{ fontWeight: "bold", fontSize: "1.25rem" }}>
           Adam Wilson
         </Navbar.Brand>
 
@@ -13,8 +13,15 @@ function NavigationBar() {
 
         <Navbar.Collapse>
           <Nav className="ms-auto">
-            <Nav.Link as={Link} to="/">Home</Nav.Link>
-            <Nav.Link as={Link} to="/projects">Projects</Nav.Link>
+            <Nav.Link as={Link} to="/" style={{ fontWeight: "bold" }}>
+              Home
+            </Nav.Link>
+            <Nav.Link as={Link} to="/projects" style={{ fontWeight: "bold" }}>
+              Projects
+            </Nav.Link>
+            <Nav.Link as={Link} to="/about" style={{ fontWeight: "bold" }}>
+              About
+            </Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Container>
