@@ -24,7 +24,9 @@ function ProjectCard({ project, onClick }) {
       {/* Banner image */}
       <div style={{
         height: "160px",
-        background: project.bannerColor,
+        backgroundImage: `url(${project.bannerSrc})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
         position: "relative",
         overflow: "hidden",
       }}>

@@ -11,7 +11,7 @@ function Footer() {
       fontSize: "0.9rem",
     }}>
       <Container>
-        © 2025 Adam Wilson — Built with React & Bootstrap
+        © 2026 Adam Wilson — Built with React & Bootstrap
       </Container>
     </footer>
   );
